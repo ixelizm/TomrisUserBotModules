@@ -2,7 +2,8 @@ from fastapi import FastAPI
 import glob
 app = FastAPI()
 
-@app.get("/")
+
+@app.get("/modules")
 async def index():
     modules = glob.glob("modules/*.py")
     temp = {}

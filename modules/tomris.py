@@ -6,23 +6,23 @@ import asyncio, time,glob
 from core.functions import time_formatter
 
 @tomris(pattern=r"^\.alive$", outgoing=True)
-async def ping(event):
-    """Botun çalışıp çalışmadığını kontrol eder"""
-    text = f"""
-
-"""
+async def aliveFunc(event):
     await event.edit(DEFAULT_ALIVE.format(ver = VERSION, modules = len(glob.glob("userbot/plugins/*.py")) - 1, zaman = time_formatter(time.time() - float(STARTED_TIME))))
-    
+
+@tomris(pattern=r"^\.tomris$", outgoing=True)
+async def tomrisFunc(event):
+    await event.edit("Modül Listesi Eklenecek")
+
+
 @tomris(pattern=r"^\.restart$", outgoing=True)
-async def update(event):
+async def restartFunc(event):
     await event.edit("Bot Yeniden Başlatıldı")
     args = [sys.executable, "main.py"]
     os.execle(sys.executable, *args, os.environ)
 
 
 @tomris(pattern=r"^\.update$", outgoing=True)
-async def ping(event):
-    
+async def updateFunc(event):
     await event.edit("Bot Güncelleniyor...")
     await asyncio.sleep(1)
     response = get(UPSTREAM_URL)
@@ -33,5 +33,7 @@ async def ping(event):
     await event.edit("Bot Güncellendi...")
     await asyncio.sleep(1)
     await event.edit("Yeniden Başlatılıyor...")
-    args = [sys.executable, "main.py"]
-    os.execle(sys.executable, *args, os.environ)
+    await asyncio.sleep(1)
+    await restartFunc(event)
+#    args = [sys.executable, "main.py"]
+#    os.execle(sys.executable, *args, os.environ)
